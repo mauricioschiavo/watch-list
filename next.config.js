@@ -8,7 +8,9 @@ const nextConfig = {
         projectId: process.env.projectId,
         storageBucket: process.env.storageBucket,
         messagingSenderId: process.env.messagingSenderId,
-        appId: process.env.appId
+        appId: process.env.appId,
+        thdb_key: process.env.thdb_key,
+        thdb_readtoken: process.env.thdb_readtoken
     }
 }
 
