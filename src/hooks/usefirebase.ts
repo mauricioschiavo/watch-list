@@ -16,9 +16,11 @@ const firebaseConfig = {
     appId: process.env.appId
 };
 
-export function useFirebase() {
+function useFirebase() {
     console.log("firebase started", firebaseConfig);
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     return { db, app, setDoc, doc, collection, query, where, getDocs };
 }
+
+export { useFirebase }
