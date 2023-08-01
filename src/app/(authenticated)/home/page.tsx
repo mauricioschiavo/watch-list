@@ -1,33 +1,34 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { useFirebase } from "../../../hooks/usefirebase";
-import { QuerySnapshot } from "@firebase/firestore";
+import { useMovieDb } from "../../../hooks/useMovieDb";
 
 export default () => {
 
-    const [ movies, setMovies ] = useState<QuerySnapshot>();
-    const { db, query, collection, getDocs } = useFirebase();
+    const { getMovies } = useMovieDb();
 
-    async function load() {
-        const q = query(collection(db, "movies"));
+    const [ movies, setMovies ] = useState([]);
 
-        const querySnapshot = await getDocs(q);
-        setMovies(querySnapshot);
-        querySnapshot.forEach((doc) => {
-            console.log(doc.id, " => ", doc.data());
-        });
+    async function loadApi() {
+        const movies = await getMovies();
+        setMovies(movies.data?.results);
+        console.log("DB", movies);
     }
 
     useEffect(() => {
         console.log("Sample");
-        load();
+        loadApi();
     }, []);
 
     return <>
         <main>Home</main>
-        {movies?.docs.map(movie => {
-            return <li key={movie.id}> {movie.data()[ "name" ]} </li>
+        <h1>Saved Movies</h1>
+        <h1>For You</h1>
+        {movies?.map(movie => {
+            return <li key={movie[ "id" ]}>
+                <img src={`https://image.tmdb.org/t/p/w500/${movie[ "backdrop_path" ]}`} />
+                {JSON.stringify(movie)}
+            </li>
         })}
     </>
 }
